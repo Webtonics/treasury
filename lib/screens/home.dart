@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treasury/constants/images.dart';
 import 'package:treasury/screens/book.dart';
 import 'package:treasury/widgets/bottom_sheet_draw.dart';
 import 'package:treasury/widgets/card_button.dart';
@@ -69,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.blue[900],
                   borderRadius: BorderRadius.circular(8)),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +89,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: "Know more",
                           fontsize: 11,
                           cardcolor: Colors.white,
-                          fontcolor: Colors.black),
+                          fontcolor: Colors.black)
+                    ],
+                  ),
+                  Column(
+                    children: const [
+                      Image(
+                        image: AssetImage(image),
+                        height: 70,
+                        width: 100,
+                      )
                     ],
                   )
                 ],

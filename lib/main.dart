@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:treasury/screens/book.dart';
 import 'package:treasury/screens/help.dart';
 import 'package:treasury/screens/home.dart';
 import 'package:treasury/screens/settings.dart';
@@ -17,7 +16,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Treasury',
       theme: ThemeData(
+          // iconTheme: const IconThemeData(color: Colors.black),
+          iconButtonTheme: const IconButtonThemeData(
+              style: ButtonStyle(
+                  iconColor: MaterialStatePropertyAll(Colors.black))),
           textTheme: const TextTheme(
+              titleMedium: TextStyle(fontWeight: FontWeight.w700),
               bodyLarge: TextStyle(fontWeight: FontWeight.w600),
               bodyMedium: TextStyle(fontWeight: FontWeight.bold),
               bodySmall: TextStyle(fontWeight: FontWeight.w500)),

@@ -19,6 +19,7 @@ class CardButton extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(0),
+        // padding: const EdgeInsets.only(left: 3, right: 5),
         child: GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => const HelpScreen(),
@@ -26,20 +27,24 @@ class CardButton extends StatelessWidget {
           child: Card(
             elevation: 2,
             color: cardcolor,
-            child: Row(
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      color: fontcolor,
-                      fontSize: fontsize,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 1,
-                ),
-                const Icon(Icons.keyboard_arrow_right_rounded)
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                        color: fontcolor,
+                        fontSize: fontsize,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 1,
+                  ),
+                  const Icon(Icons.keyboard_arrow_right_rounded)
+                ],
+              ),
             ),
           ),
         ),
