@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:treasury/constants/images.dart';
 import 'package:treasury/screens/book.dart';
@@ -18,10 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // final Stream<QuerySnapshot> users =
+  //     FirebaseFirestore.instance.collection('books').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: null,
         backgroundColor: Colors.white,
         // title:
         title: ListTile(
@@ -132,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          //List
+          // List
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -144,8 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            allowSnapshotting: false,
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            // allowSnapshotting: false,
                             builder: (context) => const BookView()));
                       },
                       leading: Icon(
@@ -153,8 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.blue[900],
                       ),
                       title: const Text("Field Trip"),
-                      subtitle: const Text(
-                          "1 Invite pending. updated on jun 11 2023"),
+                      subtitle: const Text("updated on jun 11 2023"),
                       trailing: const Text(
                         "2100",
                         style: TextStyle(

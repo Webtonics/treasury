@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:treasury/helper/models/db_model.dart';
-import 'package:treasury/widgets/card_button.dart';
+import 'package:treasury/screens/hover/add_transaction.dart';
 import 'package:treasury/widgets/page/transactions.dart';
 
 import '../widgets/search_view.dart';
+import 'help.dart';
 
 class BookView extends StatefulWidget {
   const BookView({super.key});
@@ -19,19 +19,27 @@ class _BookViewState extends State<BookView> {
     );
   }
 
+  // final _db = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
+    String uid = '';
+    String displayName = '';
+    String email = '';
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 227, 224, 224),
       appBar: AppBar(
+        leading: null,
         backgroundColor: Colors.white,
         // title:
         title: ListTile(
           leading: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black54),
-                borderRadius: BorderRadius.circular(7.0)),
+              border: Border.all(color: Colors.black54),
+              borderRadius: BorderRadius.circular(7.0),
+            ),
             child: const Icon(
               Icons.house,
               shadows: [],
@@ -258,16 +266,43 @@ class _BookViewState extends State<BookView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // add button
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                // await _db.addTransaction(bookId, amount, description, categoryId)
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //         const AddTransaction(appBarTitle: 'Add Cash in Entry'),
+                //   ),
+                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Transactions(),
+                  ),
+                );
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(builder: (context) {}));
+              },
               icon: const Icon(Icons.add),
               label: const Text("income"),
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.minPositive, 50),
                   maximumSize: const Size(double.infinity, 50)),
             ),
+
+            //remove button
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                // await _db.addUser(uid, email, displayName);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Transactions(),
+                  ),
+                );
+              },
               icon: const Icon(Icons.remove),
               label: const Text("Expense"),
               style: ElevatedButton.styleFrom(
@@ -278,5 +313,14 @@ class _BookViewState extends State<BookView> {
         ),
       ),
     );
+  }
+}
+
+class Transactions extends StatelessWidget {
+  const Transactions({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AddTransaction(appBarTitle: 'Add Cash in Entry');
   }
 }

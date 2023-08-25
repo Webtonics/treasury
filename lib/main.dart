@@ -1,9 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:treasury/screens/authentication/login.dart';
 import 'package:treasury/screens/help.dart';
 import 'package:treasury/screens/home.dart';
 import 'package:treasury/screens/settings.dart';
 
+import 'screens/cloud.dart';
+
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -31,7 +38,7 @@ class MyApp extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]))),
-      home: const Route(),
+      home: const LoginPage(),
     );
   }
 }
@@ -47,6 +54,7 @@ class _RouteState extends State<Route> {
   int currentTab = 0;
 
   List<Widget> pages = [
+    // TestCloud(),
     const HomeScreen(),
     const HelpScreen(),
     const SettingView()
@@ -63,6 +71,14 @@ class _RouteState extends State<Route> {
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
         currentIndex: currentTab,
         items: [
+          //test
+          // BottomNavigationBarItem(
+          //     icon: const Icon(Icons.book),
+          //     label: "Cashbook",
+          //     activeIcon: Icon(
+          //       Icons.book,
+          //       color: Colors.blue[900],
+          //     )),
           //home
           BottomNavigationBarItem(
               icon: const Icon(Icons.book),
