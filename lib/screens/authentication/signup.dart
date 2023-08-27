@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:treasury/screens/authentication/login.dart';
+import 'package:treasury/utils/error_dialog.dart';
+
+import '../../helper/db_helper.dart';
+import '../../services/auth/auth_exception.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -11,12 +15,14 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose();
     super.dispose();
   }
 
@@ -44,6 +50,14 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -64,10 +78,30 @@ class _RegisterPageState extends State<RegisterPage> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 60)),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Perform registration logic here
-                    // For example: save user data, navigate to next screen, etc.
+                    final email = _emailController.text;
+                    final password = _passwordController.text;
+                    final displayName = _usernameController.text;
+                    try {
+                      await DatabaseHelper()
+                          .addUser(email, password, displayName);
+                      //navigate
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/', (route) => false);
+                    } on WeakPasswordAuthException {
+                      showErrorDialog(context, 'Try a strong Password');
+                    } on EmailAlreadyinUseAuthException {
+                      showErrorDialog(context,
+                          'A user is already Associated with this Email');
+                    } on InvalidEmailAuthException {
+                      showErrorDialog(
+                          context, 'The Email you provided is invalid');
+                    } on MissingPasswordAuthException {
+                      showErrorDialog(context, 'Your password cannot be empty');
+                    } on GenericAuthException {
+                      showAboutDialog(context: context);
+                    }
                   }
                 },
                 child: const Text('Register'),

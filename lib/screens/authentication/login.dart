@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:treasury/screens/authentication/forgot_password.dart';
-import 'package:treasury/screens/authentication/signup.dart';
-import 'package:treasury/screens/home.dart';
+import 'package:treasury/services/auth/auth_service.dart';
+import 'package:treasury/utils/error_dialog.dart';
+
+import '../../services/auth/auth_exception.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -66,28 +67,38 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 60)),
-                onPressed: () {
+                onPressed: () async {
+                  final email = _emailController.text;
+                  final password = _passwordController.text;
                   if (_formKey.currentState!.validate()) {
-                    // Perform login logic here
-                    // For example: check credentials, navigate to next screen, etc.
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
-                    print(
-                        "${_emailController.text}, ${_passwordController.text}");
+                    try {
+                      await AuthService.firebase()
+                          .logIn(email: email, password: password);
+
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/', (route) => false);
+                    } on UserNotFoundAuthException {
+                      showErrorDialog(context, "User not found");
+                    } on WrongPasswordAuthException {
+                      showErrorDialog(
+                          context, "Incorrect password credentials");
+                    } on GenericAuthException {
+                      showAboutDialog(context: context);
+                    }
                   }
                 },
                 child: const Text('Login'),
               ),
               const SizedBox(
-                height: 6,
+                height: 9,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordPage()));
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/forgot-password/', (route) => false);
                       },
                       child: const Text("Forgot your password")),
                   Text(
@@ -96,10 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                       onPressed: () {
-                        //   Navigator.of(context).push(MaterialPageRoute(
-                        //       builder: (context) => const RegisterPage()));
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const RegisterPage()));
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/signup/', (route) => false);
                       },
                       child: const Text("Register New Account")),
                 ],

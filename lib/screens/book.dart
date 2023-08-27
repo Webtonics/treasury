@@ -3,7 +3,6 @@ import 'package:treasury/screens/hover/add_transaction.dart';
 import 'package:treasury/widgets/page/transactions.dart';
 
 import '../widgets/search_view.dart';
-import 'help.dart';
 
 class BookView extends StatefulWidget {
   const BookView({super.key});
@@ -23,10 +22,6 @@ class _BookViewState extends State<BookView> {
 
   @override
   Widget build(BuildContext context) {
-    String uid = '';
-    String displayName = '';
-    String email = '';
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 227, 224, 224),
       appBar: AppBar(
@@ -269,13 +264,6 @@ class _BookViewState extends State<BookView> {
             // add button
             ElevatedButton.icon(
               onPressed: () {
-                // await _db.addTransaction(bookId, amount, description, categoryId)
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) =>
-                //         const AddTransaction(appBarTitle: 'Add Cash in Entry'),
-                //   ),
-                // );
                 Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -1,22 +1,70 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'models/db_model.dart';
 
 class DatabaseHelper {
+  // firestore init
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //firebase auth intialization
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   // Add a new user
-  Future<void> addUser(String uid, String email, String displayName) async {
-    await _firestore.collection('users').doc(uid).set({
-      'email': email,
-      'displayName': displayName,
-    });
+  Future<void> addUser(
+      String email, String password, String displayName) async {
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
+
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'email': email,
+          'displayName': displayName,
+        });
+      }
+    } catch (e) {
+      print('Error adding user: $e');
+    }
+  }
+
+  //funtion to get uid
+  Future<String?> getUserID() async {
+    final user = _auth.currentUser;
+    // await user.uid
+    return user?.uid;
   }
 
   // Add a new book for a user
-  Future<void> addBook(String userId, String bookName) async {
+  Future<void> addBook(String bookName) async {
+    final userId = await getUserID();
     await _firestore.collection('books').add({
       'userId': userId,
       'bookName': bookName,
       'createdTimestamp': FieldValue.serverTimestamp(),
+    });
+  }
+
+//get book of a particular user
+  Stream<List<Book>> getBooksByUserStream(String? userId) {
+    return FirebaseFirestore.instance
+        .collection('books')
+        .where('userId', isEqualTo: userId)
+        .snapshots()
+        .map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        return Book(
+          bookId: doc.id,
+          userId: data['userId'],
+          bookName: data['bookName'],
+          createdTimestamp: data['createdTimestamp'].toDate(),
+        );
+      }).toList();
     });
   }
 

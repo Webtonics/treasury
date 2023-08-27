@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:treasury/constants/images.dart';
-import 'package:treasury/screens/book.dart';
+import 'package:treasury/services/auth/auth_service.dart';
 import 'package:treasury/widgets/bottom_sheet_draw.dart';
 import 'package:treasury/widgets/card_button.dart';
+
+import '../widgets/page/booklist.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -55,9 +56,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                AuthService.firebase().logOut();
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/', (route) => false);
+              },
               icon: Icon(
-                Icons.person_add_alt_outlined,
+                Icons.logout_outlined,
+                // Icons.person_add_alt_outlined,
                 color: Colors.blue[900],
               ))
         ],
@@ -142,38 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 width: double.infinity,
-                child: ListView.builder(
-                  // shrinkWrap: true,
-                  itemCount: 8,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            // allowSnapshotting: false,
-                            builder: (context) => const BookView()));
-                      },
-                      leading: Icon(
-                        Icons.group,
-                        color: Colors.blue[900],
-                      ),
-                      title: const Text("Field Trip"),
-                      subtitle: const Text("updated on jun 11 2023"),
-                      trailing: const Text(
-                        "2100",
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      // trailing: Row(
-                      //   children: const [
-                      //     Text("2100"),
-                      //     Icon(Icons.drag_indicator_outlined)
-                      //   ],
-                      // ),
-                    );
-                  },
-                ),
+                child: BookList(),
               ),
             ),
           ),

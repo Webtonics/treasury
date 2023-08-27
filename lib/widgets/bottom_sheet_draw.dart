@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treasury/helper/db_helper.dart';
 
 class BottomSheetView extends StatefulWidget {
   const BottomSheetView({super.key});
@@ -63,8 +64,19 @@ class _BottomSheetViewState extends State<BottomSheetView> {
             style: ElevatedButton.styleFrom(
                 shape: const BeveledRectangleBorder(),
                 minimumSize: const Size(double.maxFinite, 72)),
-            onPressed: () {
-              print(addNewBook.text);
+
+            //add new book
+            onPressed: () async {
+              final bookName = addNewBook.text;
+
+              try {
+                await DatabaseHelper().addBook(bookName);
+              } catch (e) {
+                print(e.toString());
+              }
+              // print(addNewBook.text);
+              Navigator.pop(context);
+              const SnackBar(content: Text("Added successfully"));
             },
             child: const Text('Add New Book'),
           ),

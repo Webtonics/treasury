@@ -80,7 +80,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const HelpScreen()));
                         },
-                        labeltitle: "SAVE & ADD NEW",
+                        labeltitle: "SAVE",
                         colors: Colors.white,
                         labelColor: Colors.blue[900],
                         icon: Icons.add),
