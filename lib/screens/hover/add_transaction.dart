@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treasury/helper/db_helper.dart';
 import 'package:treasury/screens/help.dart';
 import 'package:treasury/screens/home.dart';
 import 'package:treasury/widgets/button.dart';
@@ -33,15 +34,17 @@ class _AddTransactionState extends State<AddTransaction> {
     super.dispose();
   }
 
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
-    String appBarTitle = "Add Cash in Entry";
+    // String appBarTitle = "Add Cash in Entry";
     return Scaffold(
-      appBar: AppBar(title: Text(appBarTitle)),
+      appBar: AppBar(title: Text(widget.appBarTitle.toString())),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             //row: date and time
 
@@ -63,39 +66,52 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
 
             const SizedBox(
-              height: 12,
+              height: 32,
             ),
 
             // button
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ButtonWidget(
-                        onTap: () {
-                          print(_amount.text);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const HelpScreen()));
-                        },
-                        labeltitle: "SAVE",
-                        colors: Colors.white,
-                        labelColor: Colors.blue[900],
-                        icon: Icons.add),
-                    ButtonWidget(
-                      onTap: () async {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
-                      },
-                      labeltitle: "CANCEL",
-                      colors: const Color.fromRGBO(13, 71, 161, 1),
-                      icon: Icons.add,
-                    )
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      // _databaseHelper.addTransaction(
+                      //     bookId, amount, description, categoryId);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(12),
+                      minimumSize: const Size(double.infinity, 50),
+                      // maximumSize: const Size(double.infinity, 10)
+                    ),
+                    child: const Text(
+                      "    Save    ",
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(12),
+                      minimumSize: const Size(double.infinity, 50),
+                      // maximumSize: const Size(double.infinity, 10)
+                    ),
+                    child: const Text(
+                      "Cancel",
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         ),

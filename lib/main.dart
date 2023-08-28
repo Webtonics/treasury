@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         homeScreen: (context) => const HomeScreen(),
         signupScreen: (context) => const RegisterPage(),
         verifyScreen: (context) => const VerifyPasswordPage(),
-        bookScreen: (context) => const BookView(),
+        // bookScreen: (context) => const BookView(),
         helpScreen: (context) => const HelpScreen(),
         settingsScreen: (context) => const SettingView(),
         forgotPasswordScreen: (context) => const ForgotPasswordPage(),

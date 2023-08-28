@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:treasury/constants/images.dart';
+import 'package:treasury/helper/db_helper.dart';
 import 'package:treasury/services/auth/auth_service.dart';
 import 'package:treasury/widgets/bottom_sheet_draw.dart';
 import 'package:treasury/widgets/card_button.dart';
-
 import '../widgets/page/booklist.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,10 +21,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
+
+  // get username
+  // Future<String> name() async {
+  //   final username = await _databaseHelper.getName();
+  //   return username;
+  // }
+
   // final Stream<QuerySnapshot> users =
   //     FirebaseFirestore.instance.collection('books').snapshots();
   @override
   Widget build(BuildContext context) {
+    // final userName = name();
+    // print(name());
+    // print(name());
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -41,12 +53,30 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           title: const Text(
-            "Company Name",
+            "Welcome",
             style: TextStyle(color: Colors.black, fontSize: 17),
           ),
-          subtitle: const Text(
-            "Tap to switch business",
-            style: TextStyle(color: Colors.black54, fontSize: 11),
+          // subtitle: Text(
+          //   // "Emmanuel olooolo",
+          //   userName,
+          //
+          // ),
+          subtitle: FutureBuilder<Object>(
+            future: _databaseHelper.getName(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                final displayName =
+                    snapshot.data ?? ''; // Default to an empty string
+                return Text(
+                  '$displayName',
+                  style: const TextStyle(color: Colors.black54, fontSize: 17),
+                );
+              }
+            },
           ),
           trailing: const Icon(
             Icons.keyboard_arrow_down_outlined,

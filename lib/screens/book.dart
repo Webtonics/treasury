@@ -5,13 +5,15 @@ import 'package:treasury/widgets/page/transactions.dart';
 import '../widgets/search_view.dart';
 
 class BookView extends StatefulWidget {
-  const BookView({super.key});
-
+  const BookView({super.key, required this.bookName});
+  final String bookName;
   @override
   State<BookView> createState() => _BookViewState();
 }
 
 class _BookViewState extends State<BookView> {
+  // get book => bookName;
+
   Widget spacer(double height) {
     return SizedBox(
       height: height,
@@ -40,9 +42,9 @@ class _BookViewState extends State<BookView> {
               shadows: [],
             ),
           ),
-          title: const Text(
-            "Book Name",
-            style: TextStyle(color: Colors.black, fontSize: 17),
+          title: Text(
+            widget.bookName.toString(),
+            style: const TextStyle(color: Colors.black, fontSize: 17),
           ),
           subtitle: const Text(
             "Add Member, Book Activity etc",
@@ -72,6 +74,7 @@ class _BookViewState extends State<BookView> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           //Section 1
           GestureDetector(
@@ -267,7 +270,7 @@ class _BookViewState extends State<BookView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Transactions(),
+                    builder: (context) => const InTransactions(),
                   ),
                 );
                 // Navigator.of(context)
@@ -287,7 +290,7 @@ class _BookViewState extends State<BookView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Transactions(),
+                    builder: (context) => const OutTransactions(),
                   ),
                 );
               },
@@ -304,11 +307,20 @@ class _BookViewState extends State<BookView> {
   }
 }
 
-class Transactions extends StatelessWidget {
-  const Transactions({super.key});
+class InTransactions extends StatelessWidget {
+  const InTransactions({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const AddTransaction(appBarTitle: 'Add Cash in Entry');
+  }
+}
+
+class OutTransactions extends StatelessWidget {
+  const OutTransactions({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AddTransaction(appBarTitle: 'Remove Cash from Entry');
   }
 }

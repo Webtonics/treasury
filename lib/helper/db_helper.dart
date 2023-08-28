@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 import 'models/db_model.dart';
 
@@ -37,6 +38,35 @@ class DatabaseHelper {
     final user = _auth.currentUser;
     // await user.uid
     return user?.uid;
+  }
+
+  //function to get username
+  // Future<String> getUserName() async {
+  //   final user = _auth.currentUser;
+  //   final username = _firestore.collection('users').get(user!.displayName as GetOptions?);
+
+  //   return username;
+  // }
+
+  Future<Object> getName() async {
+    final user = _auth.currentUser;
+
+    if (user != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final displayName = userDoc['displayName'] as String;
+
+        return displayName;
+      } else {
+        return (const Text("data"));
+      }
+    } else {
+      return const Text("New User");
+    }
   }
 
   // Add a new book for a user
