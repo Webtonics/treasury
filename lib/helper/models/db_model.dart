@@ -41,3 +41,8 @@ class Transaction {
     required this.timestamp,
   });
 }
+
+class Category {
+  final String type;
+  Category({required this.type});
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treasury/helper/db_helper.dart';
 import 'package:treasury/screens/hover/add_transaction.dart';
 import 'package:treasury/widgets/page/transactions.dart';
 
@@ -12,21 +13,18 @@ class BookView extends StatefulWidget {
 }
 
 class _BookViewState extends State<BookView> {
-  // get book => bookName;
-
   Widget spacer(double height) {
     return SizedBox(
       height: height,
     );
   }
 
-  // final _db = DatabaseHelper();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 227, 224, 224),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         leading: null,
         backgroundColor: Colors.white,
         // title:
@@ -270,7 +268,7 @@ class _BookViewState extends State<BookView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const InTransactions(),
+                    builder: (context) => InTransactions(),
                   ),
                 );
                 // Navigator.of(context)
@@ -310,17 +308,26 @@ class _BookViewState extends State<BookView> {
 class InTransactions extends StatelessWidget {
   const InTransactions({super.key});
 
+  final String bookname = '';
+
   @override
   Widget build(BuildContext context) {
-    return const AddTransaction(appBarTitle: 'Add Cash in Entry');
+    return AddTransaction(
+      appBarTitle: 'Add Cash in Entry',
+      bookName: bookname,
+    );
   }
 }
 
 class OutTransactions extends StatelessWidget {
   const OutTransactions({super.key});
+  final String bookname = '';
 
   @override
   Widget build(BuildContext context) {
-    return const AddTransaction(appBarTitle: 'Remove Cash from Entry');
+    return AddTransaction(
+      appBarTitle: 'Remove Cash from Entry',
+      bookName: bookname,
+    );
   }
 }

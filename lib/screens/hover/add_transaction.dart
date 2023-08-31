@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:treasury/helper/db_helper.dart';
-import 'package:treasury/screens/help.dart';
-import 'package:treasury/screens/home.dart';
-import 'package:treasury/widgets/button.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({
@@ -13,15 +10,30 @@ class AddTransaction extends StatefulWidget {
   // final double amount;
   final String appBarTitle;
 
-  // _AddTransactionState(this.amount, this.appBarTitle);
-
   @override
   State<AddTransaction> createState() => _AddTransactionState();
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  // String get appBarTitle => appBarTitle;
+  // final String appBarTitle = appBarTitle;
+  // final String book = appBartitle.toString();
   TextEditingController _amount = TextEditingController();
+
+  Future<String> getBook() async {
+    final String bookName = widget.appBarTitle.toString();
+    print(bookName);
+    final String? bookId = await _databaseHelper.getBookIdByName(bookName);
+    if (bookId != null) {
+      // Do something with the bookId
+      print('Book ID: $bookId');
+      return bookId.toString();
+    } else {
+      print('Book not found.');
+      return bookName;
+    }
+  }
+
+  // static String get appBartitle => null;
   @override
   void initState() {
     _amount = TextEditingController();
@@ -76,16 +88,17 @@ class _AddTransactionState extends State<AddTransaction> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
-                      // _databaseHelper.addTransaction(
-                      //     bookId, amount, description, categoryId);
+                      // Replace with the actual book name
+                      await getBook();
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(12),
                       minimumSize: const Size(double.infinity, 50),
                       // maximumSize: const Size(double.infinity, 10)
                     ),
-                    child: const Text(
-                      "    Save    ",
+                    child: Text(
+                      // "    Save    ",
+                      widget.appBarTitle.toString(),
                       style:
                           TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                     ),

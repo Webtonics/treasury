@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +43,6 @@ class DatabaseHelper {
   }
 
   //function to get username
-  // Future<String> getUserName() async {
-  //   final user = _auth.currentUser;
-  //   final username = _firestore.collection('users').get(user!.displayName as GetOptions?);
-
-  //   return username;
-  // }
-
   Future<Object> getName() async {
     final user = _auth.currentUser;
 
@@ -77,6 +72,21 @@ class DatabaseHelper {
       'bookName': bookName,
       'createdTimestamp': FieldValue.serverTimestamp(),
     });
+  }
+
+  //get book id
+  Future<String?> getBookIdByName(String bookName) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('books')
+        .where('bookName', isEqualTo: bookName)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final bookDoc = querySnapshot.docs.first;
+      return bookDoc.id;
+    } else {
+      return null; // Book with the given name not found
+    }
   }
 
 //get book of a particular user
