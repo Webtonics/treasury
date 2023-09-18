@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:treasury/resources/auth_method.dart';
 import 'package:treasury/screens/authentication/login.dart';
 import 'package:treasury/utils/error_dialog.dart';
 
@@ -84,8 +85,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     final password = _passwordController.text;
                     final displayName = _usernameController.text;
                     try {
-                      await DatabaseHelper()
-                          .addUser(email, password, displayName);
+                      await AuthMethod().addNewUser(_usernameController.text,
+                          _emailController.text, _passwordController.text);
                       //navigate
                       Navigator.of(context)
                           .pushNamedAndRemoveUntil('/', (route) => false);

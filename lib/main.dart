@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:treasury/helper/db_helper.dart';
+import 'package:treasury/providers/userProvider.dart';
 import 'package:treasury/screens/authentication/forgot_password.dart';
 import 'package:treasury/screens/authentication/login.dart';
 import 'package:treasury/screens/authentication/signup.dart';
@@ -17,10 +18,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
 
-  runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => DatabaseHelper())],
-    child: const MyApp(),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,38 +26,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Treasury',
-      theme: ThemeData(
-          // iconTheme: const IconThemeData(color: Colors.black),
-          iconButtonTheme: const IconButtonThemeData(
-              style: ButtonStyle(
-                  iconColor: MaterialStatePropertyAll(Colors.black))),
-          textTheme: const TextTheme(
-              titleMedium: TextStyle(fontWeight: FontWeight.w700),
-              bodyLarge: TextStyle(fontWeight: FontWeight.w600),
-              bodyMedium: TextStyle(fontWeight: FontWeight.bold),
-              bodySmall: TextStyle(fontWeight: FontWeight.w500)),
-          // primaryColor: Colors.blue[900],
-          // primarySwatch: Color.fromARGB(255, 15, 67, 146),
-          appBarTheme: AppBarTheme(backgroundColor: Colors.blue[900]),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]))),
-      routes: {
-        '/': (context) => const MyAppRoute(),
-        loginscreen: (context) => const LoginPage(),
-        homeScreen: (context) => const HomeScreen(),
-        signupScreen: (context) => const RegisterPage(),
-        verifyScreen: (context) => const VerifyPasswordPage(),
-        // bookScreen: (context) => const BookView(),
-        helpScreen: (context) => const HelpScreen(),
-        settingsScreen: (context) => const SettingView(),
-        forgotPasswordScreen: (context) => const ForgotPasswordPage(),
-      },
-      initialRoute: '/',
-      // home: const LoginPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Treasury',
+        theme: ThemeData(
+            // iconTheme: const IconThemeData(color: Colors.black),
+            iconButtonTheme: const IconButtonThemeData(
+                style: ButtonStyle(
+                    iconColor: MaterialStatePropertyAll(Colors.black))),
+            textTheme: const TextTheme(
+                titleMedium: TextStyle(fontWeight: FontWeight.w700),
+                bodyLarge: TextStyle(fontWeight: FontWeight.w600),
+                bodyMedium: TextStyle(fontWeight: FontWeight.bold),
+                bodySmall: TextStyle(fontWeight: FontWeight.w500)),
+            // primaryColor: Colors.blue[900],
+            // primarySwatch: Color.fromARGB(255, 15, 67, 146),
+            appBarTheme: AppBarTheme(backgroundColor: Colors.blue[900]),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[900]))),
+        routes: {
+          '/': (context) => const MyAppRoute(),
+          loginscreen: (context) => const LoginPage(),
+          homeScreen: (context) => const HomeScreen(),
+          signupScreen: (context) => const RegisterPage(),
+          verifyScreen: (context) => const VerifyPasswordPage(),
+          // bookScreen: (context) => const BookView(),
+          helpScreen: (context) => const HelpScreen(),
+          settingsScreen: (context) => const SettingView(),
+          forgotPasswordScreen: (context) => const ForgotPasswordPage(),
+        },
+        initialRoute: '/',
+        // home: const LoginPage(),
+      ),
     );
   }
 }

@@ -10,10 +10,6 @@ class User {
     required this.email,
     required this.displayName,
   });
-
-  Map<String, dynamic> toJson() =>
-      {'uid': uid, 'email': email, 'displayName': displayName};
-
   static User fromJson(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return User(
@@ -21,6 +17,9 @@ class User {
         email: snapshot['email'],
         displayName: snapshot['displayName']);
   }
+
+  Map<String, dynamic> toJson() =>
+      {'uid': uid, 'email': email, 'displayName': displayName};
 }
 
 class Book {
