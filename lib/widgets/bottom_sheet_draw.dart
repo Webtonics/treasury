@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:treasury/helper/db_helper.dart';
 
 class BottomSheetView extends StatefulWidget {
@@ -70,7 +71,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
               final bookName = addNewBook.text;
 
               try {
-                await DatabaseHelper().addBook(bookName);
+                await Provider.of<DatabaseHelper>(context, listen: false)
+                    .addBook(bookName);
               } catch (e) {
                 print(e.toString());
               }

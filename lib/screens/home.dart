@@ -22,20 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-
-  // get username
-  // Future<String> name() async {
-  //   final username = await _databaseHelper.getName();
-  //   return username;
-  // }
-
-  // final Stream<QuerySnapshot> users =
-  //     FirebaseFirestore.instance.collection('books').snapshots();
   @override
   Widget build(BuildContext context) {
-    // final userName = name();
-    // print(name());
-    // print(name());
     return Scaffold(
       appBar: AppBar(
         leading: null,

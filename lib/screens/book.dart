@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:treasury/helper/db_helper.dart';
 import 'package:treasury/screens/hover/add_transaction.dart';
 import 'package:treasury/widgets/page/transactions.dart';
 
 import '../widgets/search_view.dart';
 
 class BookView extends StatefulWidget {
-  const BookView({super.key, required this.bookName});
-  final String bookName;
+  const BookView({super.key, required this.book});
+  final String book;
   @override
   State<BookView> createState() => _BookViewState();
 }
@@ -41,11 +40,11 @@ class _BookViewState extends State<BookView> {
             ),
           ),
           title: Text(
-            widget.bookName.toString(),
+            widget.book,
             style: const TextStyle(color: Colors.black, fontSize: 17),
           ),
           subtitle: const Text(
-            "Add Member, Book Activity etc",
+            "Add Book Activity ",
             style: TextStyle(color: Colors.black54, fontSize: 11),
           ),
           trailing: const Icon(
@@ -268,7 +267,9 @@ class _BookViewState extends State<BookView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InTransactions(),
+                    builder: (context) => InTransactions(
+                      bookname: widget.book.toString(),
+                    ),
                   ),
                 );
                 // Navigator.of(context)
@@ -288,7 +289,9 @@ class _BookViewState extends State<BookView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const OutTransactions(),
+                    builder: (context) => OutTransactions(
+                      bookname: widget.book.toString(),
+                    ),
                   ),
                 );
               },
@@ -306,9 +309,9 @@ class _BookViewState extends State<BookView> {
 }
 
 class InTransactions extends StatelessWidget {
-  const InTransactions({super.key});
+  const InTransactions({super.key, required this.bookname});
 
-  final String bookname = '';
+  final String bookname;
 
   @override
   Widget build(BuildContext context) {
@@ -320,8 +323,8 @@ class InTransactions extends StatelessWidget {
 }
 
 class OutTransactions extends StatelessWidget {
-  const OutTransactions({super.key});
-  final String bookname = '';
+  const OutTransactions({super.key, required this.bookname});
+  final String bookname;
 
   @override
   Widget build(BuildContext context) {

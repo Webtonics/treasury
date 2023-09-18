@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:treasury/screens/book.dart';
 
 import '../../helper/db_helper.dart';
@@ -16,6 +17,7 @@ class BookList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? userId = _auth.currentUser?.uid.toString();
+
     return StreamBuilder<List<Book>>(
         stream:
             _databaseHelper.getBooksByUserStream(userId), // Pass the user ID
@@ -34,17 +36,36 @@ class BookList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final book = userBooks[index];
                 final bookName = book.bookName; // Use an empty str
+
+                // Future<String?>getBookName(String bookname) async {
+                //   String? bookIdGet =
+                //       await context.read<DatabaseHelper>().getBookIdByName(bookname);
+                //   return bookIdGet;
+                // }
+
+                // Inside an asynchronous function (e.g., an async onPressed callback)
+                Future<Object> someAsyncFunction(String mybookName) async {
+                  final String mybookName =
+                      bookName; // Replace with the actual book name
+                  final String? mybookId = await context
+                      .read<DatabaseHelper>()
+                      .getBookId(mybookName);
+
+                  if (mybookId != null) {
+                    // Do something with the book ID
+                    return mybookId;
+                  } else {
+                    print('Book not found.');
+                    return const Text('Book not found.');
+                  }
+                }
+
                 return ListTile(
-                  onTap: () {
+                  onTap: () async {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BookView(
-                              bookName: bookName,
+                              book: someAsyncFunction(bookName).toString(),
                             )));
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //     // allowSnapshotting: false,
-                    //     builder: (context) =>  BookView( ) ));
-                    //   Navigator.of(context)
-                    //       .pushNamedAndRemoveUntil('/books/', (route) => false);
                   },
                   leading: Icon(
                     Icons.group,
@@ -59,12 +80,6 @@ class BookList extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
-                  // trailing: Row(
-                  //   children: const [
-                  //     Text("2100"),
-                  //     Icon(Icons.drag_indicator_outlined)
-                  //   ],
-                  // ),
                 );
               },
             );

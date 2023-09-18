@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:treasury/helper/db_helper.dart';
 import 'package:treasury/screens/authentication/forgot_password.dart';
 import 'package:treasury/screens/authentication/login.dart';
 import 'package:treasury/screens/authentication/signup.dart';
 import 'package:treasury/screens/authentication/verify_email.dart';
-import 'package:treasury/screens/book.dart';
 import 'package:treasury/screens/help.dart';
 import 'package:treasury/screens/home.dart';
 import 'package:treasury/screens/settings.dart';
@@ -16,7 +17,10 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => DatabaseHelper())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -78,9 +82,12 @@ class MyAppRoute extends StatelessWidget {
             }
 
           default:
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
+            return Scaffold(
+              body: Container(
+                color: Colors.deepPurple,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
             );
         }
@@ -117,15 +124,6 @@ class _RouteState extends State<Route> {
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
         currentIndex: currentTab,
         items: [
-          //test
-          // BottomNavigationBarItem(
-          //     icon: const Icon(Icons.book),
-          //     label: "Cashbook",
-          //     activeIcon: Icon(
-          //       Icons.book,
-          //       color: Colors.blue[900],
-          //     )),
-          //home
           BottomNavigationBarItem(
               icon: const Icon(Icons.book),
               label: "Cashbook",
@@ -133,14 +131,6 @@ class _RouteState extends State<Route> {
                 Icons.book,
                 color: Colors.blue[900],
               )),
-          // body
-          // BottomNavigationBarItem(
-          //     icon: const Icon(Icons.bookmark_add_outlined),
-          //     label: "Book",
-          //     activeIcon: Icon(
-          //       Icons.bookmark_add_outlined,
-          //       color: Colors.blue[900],
-          //     )),
           //help
           BottomNavigationBarItem(
               icon: const Icon(Icons.help_outline_outlined),

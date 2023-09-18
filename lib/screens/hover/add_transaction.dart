@@ -5,11 +5,12 @@ class AddTransaction extends StatefulWidget {
   const AddTransaction({
     super.key,
     required this.appBarTitle,
+    required this.bookName,
   });
 
   // final double amount;
   final String appBarTitle;
-
+  final String bookName;
   @override
   State<AddTransaction> createState() => _AddTransactionState();
 }

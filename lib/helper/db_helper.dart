@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'models/db_model.dart';
 
-class DatabaseHelper {
+class DatabaseHelper extends ChangeNotifier {
   // firestore init
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -25,11 +25,14 @@ class DatabaseHelper {
       final user = userCredential.user;
 
       if (user != null) {
-        await _firestore.collection('users').doc(user.uid).set({
-          'email': email,
-          'displayName': displayName,
-        });
+        await _firestore.collection('users').doc(user.uid).set(
+          {
+            'email': email,
+            'displayName': displayName,
+          },
+        );
       }
+      notifyListeners();
     } catch (e) {
       print('Error adding user: $e');
     }
@@ -72,9 +75,45 @@ class DatabaseHelper {
       'bookName': bookName,
       'createdTimestamp': FieldValue.serverTimestamp(),
     });
+    notifyListeners();
+  }
+
+  //delete book
+  Future<void> deleteBook(String bookName) async {
+    final bookID = await getBookId(bookName);
+    print(bookID);
+    try {
+      await _firestore.collection('books').doc(bookID).delete();
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   //get book id
+  Future<String?> getBookId(String bookName) async {
+    try {
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection(
+              'books') // Replace 'books' with your Firestore collection name
+          .where('bookName', isEqualTo: bookName)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final String bookId = querySnapshot.docs.first.id;
+        return bookId;
+      } else {
+        // Book with the given name not found
+        return null;
+      }
+    } catch (e) {
+      // Handle any errors, e.g., displaying an error message.
+      print('Error getting book ID: $e');
+      return null;
+    }
+  }
+
+  //get book idby name
   Future<String?> getBookIdByName(String bookName) async {
     final querySnapshot = await FirebaseFirestore.instance
         .collection('books')
@@ -118,6 +157,7 @@ class DatabaseHelper {
       'categoryId': categoryId,
       'timestamp': FieldValue.serverTimestamp(),
     });
+    notifyListeners();
   }
 
   // Get all books for a user
